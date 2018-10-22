@@ -3,27 +3,31 @@ const net = require('net');
 const PORT = 8080;
 const host = process.argv[2];
 
-const getServer = net.createConnection(PORT, host,() =>{
-console.log('Connected')
+const getServer = net.createConnection(PORT, host, () => {
+  console.log('Connected');
 
-let date = new Date();
-let rfcDate = date.toUTCString();
-let uri = `/`;
-let request = `GET ${uri} HTTP/1.1
-Date: ${rfcDate}
-Host: ${host}
-User-Agent: Magic\r\n\r\n`;
-if(request === null){
-  getServer.write(`Please choose a URI to send to the host server`)
-}
+  let date = new Date();
 
-getServer.write(request)
+  let rfcDate = date.toUTCString();
 
-getServer.on('data', (data)=>{
-  console.log(data.toString());
-  getServer.destroy()
-})
-})
+  let uri = `/`;
+
+  let request = `GET ${uri} HTTP/1.1
+  Date: ${rfcDate}
+  Host: ${host}
+  User-Agent: Magic\r\n\r\n`;
+  
+  if (request === null) {
+    getServer.write(`Please choose a URI to send to the host server`)
+  };
+
+  getServer.write(request);
+
+  getServer.on('data', (data) => {
+    console.log(data.toString());
+    getServer.destroy();
+  })
+});
 
 
 
