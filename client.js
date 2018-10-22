@@ -3,9 +3,13 @@ const net = require('net');
 const PORT = 8080;
 const host = process.argv[2];
 
+// if (!host) {
+//   getServer.write(`You may use `)
+//process.end
+// };
 const getServer = net.createConnection(PORT, host, () => {
   console.log('Connected');
-
+  
   let date = new Date();
 
   let rfcDate = date.toUTCString();
@@ -15,16 +19,12 @@ const getServer = net.createConnection(PORT, host, () => {
   let request = `GET ${uri} HTTP/1.1
   Date: ${rfcDate}
   Host: ${host}
-  User-Agent: Magic\r\n\r\n`;
+  User-Agent: Unicorn\r\n\r\n`;
   
-  if (request === null) {
-    getServer.write(`Please choose a URI to send to the host server`)
-  };
-
   getServer.write(request);
 
-  getServer.on('data', (data) => {
-    console.log(data.toString());
+  getServer.on('data', (responseData) => {
+    console.log(responseData.toString());
     getServer.destroy();
   })
 });
